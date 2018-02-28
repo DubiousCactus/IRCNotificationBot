@@ -6,10 +6,11 @@
 # Distributed under terms of the MIT license.
 #
 
+rm -Rf ~/.config/IRCNotificationBot/
+
 [ "$(whoami)" != "root" ] && exec sudo -- "$0" "$@"
 
 systemctl stop IRCNotificationBot.service
 systemctl disable IRCNotificationBot.service
 rm /etc/systemd/system/IRCNotificationBot.service
 rm -Rf /opt/IRCNotificationBot
-rm -Rf ~/.config/IRCNotificationBot/
