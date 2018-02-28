@@ -9,13 +9,13 @@
 
 [ "$(whoami)" != "root" ] && exec sudo -- "$0" "$@"
 
-mkdir /opt/irc_notifier
-cd /opt/irc_notifier
+mkdir /opt/IRCNotificationBot
+cd /opt/IRCNotificationBot
 
 wget https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/watchdog.py
-wget https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/irc_notifier.service
+wget https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/IRCNotificationBot.service
 
 chmod +x watchdog.py
-mv irc_notifier.service /etc/systemd/system/
-systemctl enable irc_notifier.service
-systemctl start irc_notifier.service
+mv IRCNotificationBot.service /etc/systemd/system/
+systemctl enable IRCNotificationBot.service
+systemctl start IRCNotificationBot.service
