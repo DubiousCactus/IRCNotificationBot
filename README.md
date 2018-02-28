@@ -27,3 +27,8 @@ This service does not require any modules other than the Python3 standard module
 # Installation:
 
 	curl -s https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/install.sh | bash
+
+# Uninstallation:
+
+	curl -s https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/uninstall.sh | bash
+
