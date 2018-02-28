@@ -26,8 +26,6 @@ class IRCServer:
 
         self._channel = config['channel']
         self._botName = config['botName']
-        self._admin = config['admin']
-        self._exitCode = config['exitCode']
         self._timeout = config['timeout']
         self._notifs = config['notifications']
 
