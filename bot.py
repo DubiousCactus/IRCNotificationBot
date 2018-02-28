@@ -20,6 +20,7 @@ from threading import Thread, Lock
 running = True
 hannesHasJoinned = False
 mutex = Lock()
+onlineUsers = []
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "chat.freenode.net"
@@ -51,9 +52,9 @@ def heart_beat():
         # parse users list and if hannes joined, notify
         for user in users:
             print("[DEBUG] user: " + user)
-            if ((user.lower().find("hannes") != -1) or (user.lower().find("bartle") != -1)) and (not hannesHasJoinned):
-                user_joinned("Hannes")
-                hannesHasJoinned = True
+            if onlineUsers.count(user) == 0:
+                onlineUsers.append(user)
+                user_joinned(user)
             
 
 def init():
