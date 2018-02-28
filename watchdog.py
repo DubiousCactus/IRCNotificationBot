@@ -124,7 +124,7 @@ def user_left(user):
 
 
 def user_joinned(user):
-    if currentUsers.count(user) == 0:
+    if currentUsers.count(user) == 0 and user != admin:
         currentUsers.append(user)
          # Send desktop notification
         os.system("notify-send '{}' '{}' --icon=dialog-information".format(notifs['join']['title'], notifs['join']['body'].replace("##USER##", user).replace("##CHANNEL", channel)))
