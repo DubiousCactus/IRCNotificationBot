@@ -55,9 +55,9 @@ However, if you want it to run at boot time as a service, you can simply move th
 ## Automatic uninstallation
 Simply run the following command (if you don't trust me, and you shouldn't, just read through the uninstall script, it is commented and pretty straight-forward):
 
-	curl -s https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/uninstall.sh | bash
+	curl -s https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/uninstall.sh | bash && echo 'Good riddance !'
 
 ## Manual uninstallation
 * Disable the service: `systemctl --user disable IRCNotificationBot.service`
-* Delete  the service" `rm ~/.config/systemd/user/IRCNotificationBot.service`
-* Delete the bot and the config: `rm -rf /opt/IRCNotificationBot && rm -rf ~/.config/IRCNotificationBot
+* Delete the service: `rm ~/.config/systemd/user/IRCNotificationBot.service`
+* Delete the bot and the config: `rm -rf /opt/IRCNotificationBot && rm -rf ~/.config/IRCNotificationBot`
