@@ -1,4 +1,4 @@
-! /bin/sh
+#! /bin/sh
 #
 # install.sh
 # Copyright (C) 2018 transpalette <transpalette@translaptop>
@@ -19,6 +19,7 @@ wget https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/watchdo
 wget https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/IRCNotificationBot.service
 
 chmod +x watchdog.py
+sed -i.bak "s/##USER##/$(whoami)/g" IRCNotificationBot.service
 mv IRCNotificationBot.service /usr/lib/systemd/system/
 systemctl enable IRCNotificationBot.service
 systemctl start IRCNotificationBot.service
