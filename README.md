@@ -73,7 +73,7 @@ Simply run the following command (if you don't trust me, and you shouldn't, just
 ## To Do
 The following features are not implemented yet:
 
-[ ] Code refactoring
-[ ] White list
-[ ] New messages notifications
-[ ] Toggle new messages notifications on shortcut
+- [ ] Code refactoring
+- [ ] White list
+- [ ] New messages notifications
+- [ ] Toggle new messages notifications on shortcut
