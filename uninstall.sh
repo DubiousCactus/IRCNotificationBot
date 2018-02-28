@@ -12,5 +12,5 @@ rm -Rf ~/.config/IRCNotificationBot/
 
 systemctl stop IRCNotificationBot.service
 systemctl disable IRCNotificationBot.service
-rm /etc/systemd/system/IRCNotificationBot.service
+rm /usr/lib/systemd/system/IRCNotificationBot.service
 rm -Rf /opt/IRCNotificationBot

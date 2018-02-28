@@ -19,6 +19,6 @@ wget https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/watchdo
 wget https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/IRCNotificationBot.service
 
 chmod +x watchdog.py
-mv IRCNotificationBot.service /etc/systemd/system/
+mv IRCNotificationBot.service /usr/lib/systemd/system/
 systemctl enable IRCNotificationBot.service
 systemctl start IRCNotificationBot.service
