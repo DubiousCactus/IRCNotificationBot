@@ -1,9 +1,8 @@
 [Unit]
-Description=Simple IRC notifier for one channel
+Description=Simple IRC notifier
 After=syslog.target
 
 [Service]
-User=##USER##
 Type=simple
 ExecStart=/opt/IRCNotificationBot/watchdog.py
 StandardOutput=syslog

@@ -70,7 +70,7 @@ def join_chan(chan):
             ircmsg = ircsock.recv(2048).decode("UTF-8").strip('\n\r')
 
     print("[*] Channel successfuly joint !")
-    os.system("notify-send 'IRC Notifier bot' 'Successfuly joinned {}!' -t 5000 --icon=dialog-information".format(chan))
+    os.system("/usr/bin/notify-send 'IRC Notifier bot' 'Successfuly joinned {}!' -t 5000 --icon=dialog-information".format(chan))
 
 
 # Respond to pings
@@ -112,7 +112,7 @@ def user_left(user):
     if currentUsers.count(user) != 0:
         currentUsers.remove(user)
          # Send desktop notification
-        os.system("notify-send '{}' '{}' -t 5000 --icon=dialog-information".format(notifs['part']['title'], notifs['part']['body'].replace("##USER##", user).replace("##CHANNEL", channel)))
+        os.system("/usr/bin/notify-send '{}' '{}' -t 5000 --icon=dialog-information".format(notifs['part']['title'], notifs['part']['body'].replace("##USER##", user).replace("##CHANNEL", channel)))
 
 
 
@@ -120,7 +120,7 @@ def user_joinned(user):
     if currentUsers.count(user) == 0 and user != admin:
         currentUsers.append(user)
          # Send desktop notification
-        os.system("notify-send '{}' '{}' -t 5000 --icon=dialog-information".format(notifs['join']['title'], notifs['join']['body'].replace("##USER##", user).replace("##CHANNEL", channel)))
+        os.system("/usr/bin/notify-send '{}' '{}' -t 5000 --icon=dialog-information".format(notifs['join']['title'], notifs['join']['body'].replace("##USER##", user).replace("##CHANNEL", channel)))
 
 
 # Handle the incoming message depending on its content
