@@ -23,7 +23,7 @@ cd ~/.config/systemd/user/
 wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/IRCNotificationBot.service
 
 echo "[*] Creating /opt/IRCNotificationBot"
-sudo "mkdir /opt/IRCNotificationBot"
+sudo mkdir /opt/IRCNotificationBot
 cd /opt/IRCNotificationBot
 
 echo "[*] Downloading the service script from GitHub"
