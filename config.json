@@ -18,8 +18,8 @@
 			"body": "##USER## joinned the channel ##CHANNEL##"
 		},
 		"part": {
-			"title": "",
-			"body": ""
+			"title": "IRC Notification",
+			"body": "##USER## has left the channel ##CHANNEL##"
 		}		
 	}
 }
