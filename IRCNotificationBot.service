@@ -4,7 +4,7 @@ After=syslog.target
 
 [Service]
 Type=simple
-ExecStart=/opt/irc_notifier/watchdog.py
+ExecStart=/opt/IRCNotificationBot/watchdog.py
 StandardOutput=syslog
 StandardError=syslog
 
