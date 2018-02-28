@@ -29,16 +29,7 @@ botName = ""
 admin = ""
 exitCode = ""
 
-notifs = {
-    "join": {
-        "title": "",
-        "body": ""
-    },
-    "part": {
-        "title": "",
-        "body": ""
-    }
-}
+notifs = {}
 
 
 def init():
@@ -53,10 +44,7 @@ def init():
     admin = config['admin']
     exitCode = config['exitCode']
     timeout = config['receiveTimeout']
-    notifs["join"]["title"] = config['notifications']["join"]["title"]
-    notifs["join"]["body"] = config['notifications']["join"]["body"]
-    notifs["part"]["title"] = config['notifications']["part"]["title"]
-    notifs["part"]["body"] = config['notifications']["part"]["body"]
+    notifs = config['notifications']
 
     print("[*] Connecting to {}...".format(server))
 
