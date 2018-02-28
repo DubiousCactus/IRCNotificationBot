@@ -1,0 +1,14 @@
+[Unit]
+Description=Simple IRC notifier for one channel
+After=syslog.target
+
+[Service]
+Type=simple
+User=node
+Group=node
+ExecStart=/home/.irc_notifier/watchdog.py
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
