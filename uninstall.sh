@@ -7,10 +7,8 @@
 #
 
 rm -Rf ~/.config/IRCNotificationBot/
+systemctl --user stop IRCNotificationBot.service
+systemctl --user disable IRCNotificationBot.service
+rm ~/.config/systemd/user/IRCNotificationBot.service
 
-[ "$(whoami)" != "root" ] && exec sudo -- "$0" "$@"
-
-systemctl stop IRCNotificationBot.service
-systemctl disable IRCNotificationBot.service
-rm /usr/lib/systemd/system/IRCNotificationBot.service
-rm -Rf /opt/IRCNotificationBot
+sudo rm -Rf /opt/IRCNotificationBot
