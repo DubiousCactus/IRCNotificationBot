@@ -29,23 +29,14 @@ botName = ""
 admin = ""
 exitCode = ""
 
-notifs = {
-    "join": {
-        "title": "IRC Notification",
-        "body": "##USER## joinned the channel ##CHANNEL##"
-    },
-    "part": {
-        "title": "IRC Notification",
-        "body": "##USER## has left the channel ##CHANNEL##"
-    }
-}
+notifs = {}
 
 
 def init():
     with open(config_location) as config_file:
         config = json.load(config_file)
 
-    global server, port, botName, admin, exitCode, timeout, channel
+    global server, port, botName, admin, exitCode, timeout, channel, notifs
     server = config['server']
     port = config['port']
     channel = config['channel']
@@ -53,6 +44,7 @@ def init():
     admin = config['admin']
     exitCode = config['exitCode']
     timeout = config['receiveTimeout']
+    notifs = config['notifications']
 
     print("[*] Connecting to {}...".format(server))
 

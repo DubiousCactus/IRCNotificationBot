@@ -20,13 +20,13 @@ The configuration file is available at `~/.config/IRCNotificationBot/config.json
 		],
 		"notifications": {
 			"join": {
-				"title": "",
-				"body":  ""
+				"title": "IRC Notification",
+				"body": "##USER## joinned the channel ##CHANNEL##"
 			},
 			"part": {
-				"title": "",
-				"body": ""
-			}		
+				"title": "IRC Notification",
+				"body": "##USER## has left the channel ##CHANNEL##"
+			}	
 		}
 	}
 
