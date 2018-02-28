@@ -15,6 +15,7 @@ cd /opt/irc_notifier
 wget https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/watchdog.py
 wget https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/irc_notifier.service
 
+chmod +x watchdog.py
 mv irc_notifier.service /etc/systemd/system/
 systemctl enable irc_notifier.service
 systemctl start irc_notifier.service

@@ -1,4 +1,4 @@
-#! /usr/bin/python3  -p
+#! /usr/bin/python3 
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
 #
@@ -71,7 +71,6 @@ def join_chan(chan):
 # Respond to pings
 def pong():
     ircsock.send(bytes("PONG :pingis\n", "UTF-8"))
-    print("[DEBUG] Sending PONG...")
 
 
 # Kill the bot
@@ -88,9 +87,6 @@ def recv():
     if ready[0]:
         ircmsg = ircsock.recv(1024).decode("UTF-8").strip('\n\r')
     
-        print("[DEBUG] Received: {}".format(ircmsg))
-
-
         '''
         Format of a private message from IRC:
             [Nick]!~[hostname]@[IP Address] PRIVMSG [channel] :[message]
