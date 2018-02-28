@@ -21,12 +21,12 @@ class IRCServer:
     config_location = str(Path.home()) + "/.config/IRCNotificationBot/config.json"
 
     def __init__(self, callback):
-        with open(config_location) as config_file:
+        with open(self.config_location) as config_file:
             config = json.load(config_file)
 
         self._channel = config['channel']
         self._botName = config['botName']
-        self._timeout = config['timeout']
+        self._timeout = config['receiveTimeout']
         self._notifs = config['notifications']
 
         self._running = False

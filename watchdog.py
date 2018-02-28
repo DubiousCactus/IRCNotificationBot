@@ -11,39 +11,41 @@ Small bot that sends desktop notifications when users log in/out
 """
 
 import signal
-import server
-import utils
 import json
+
+from pathlib import Path
+from server import IRCServer
+from utils import Util
 
 class Watchdog:
 
     config_location = str(Path.home()) + "/.config/IRCNotificationBot/config.json"
 
     def __init__(self):
-        with open(config_location) as config_file:
+        with open(self.config_location) as config_file:
             config = json.load(config_file)
 
         self._currentUsers = []
         self._admin = config['admin']
         self._exitCode = config['exitCode']
         self._notifs = config['notifications']
-        self.notifs['part']['body'] = self.notifs['part']['body'].replace('##CHANNEL##', config['channel'])
-        self.notifs['join']['body'] = self.notifs['join']['body'].replace('##CHANNEL##', config['channel'])
+        self._notifs['part']['body'] = self._notifs['part']['body'].replace('##CHANNEL##', config['channel'])
+        self._notifs['join']['body'] = self._notifs['join']['body'].replace('##CHANNEL##', config['channel'])
         self._server = IRCServer(self)
 
 
     def user_left(self, user):
         if self._currentUsers.count(user) != 0:
             self._urrentUsers.remove(user)
-             # Send desktop notification
-             Util.notify(notifs['part']['title'], notifs['part']['body'].replace("##USER##", user))
+            # Send desktop notification
+            Util.notify(notifs['part']['title'], notifs['part']['body'].replace("##USER##", user))
 
 
     def user_joinned(self, user):
         if currentUsers.count(user) == 0 and user != self._admin:
             currentUsers.append(user)
-             # Send desktop notification
-             Util.notify(notifs['join']['title'], notifs['join']['body'].replace("##USER##", user))
+            # Send desktop notification
+            Util.notify(notifs['join']['title'], notifs['join']['body'].replace("##USER##", user))
 
 
     # Handle the incoming message depending on its content
@@ -64,7 +66,6 @@ class Watchdog:
         self._server.watch()
 
 
-
-# Run
-watchdog = Watchdog()   
-watchdog.run()
+if __name__ == '__main__':
+    watchdog = Watchdog()
+    watchdog.run()
