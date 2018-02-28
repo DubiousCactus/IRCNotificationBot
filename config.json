@@ -1,0 +1,15 @@
+{
+	"server": "chat.freenode.net",
+	"port": 6667,
+	"channel": "#subseven",
+	"receiveTimeout": 2,
+	"botName": "Cyber-Theo-9000",
+	"admin": "transpalette",
+	"exitCode" : "die bitch!",
+	"usesWhitelist": false,
+	"whitelist": [
+		"user1",
+		"user2",
+		"user3"
+	]
+}

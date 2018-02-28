@@ -14,49 +14,61 @@ import socket
 import os
 import signal
 import select
+import json
+from pathlib import Path
 
 running = True
 currentUsers = []
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-timeout = 3
-server = "chat.freenode.net"
-channel = "#subseven"
-botnick = "Cyber-Theo-9000"
-admin = "transpalette"
-exitCode = "die bitch!"
+config_location = str(Path.home()) + "/.config/IRCNotificationBot/config.json"
+timeout = 1
+server = ""
+channel = ""
+botName = ""
+admin = ""
+exitCode = ""
 
 notifs = {
-    "away": {
-        "title": "AFK notice",
-        "body": "##USER## went away"
-    },
     "join": {
-        "title": "Join notice",
-        "body": "##USER## joinned the channel " + channel
+        "title": "IRC Notification",
+        "body": "##USER## joinned the channel ##CHANNEL##"
     },
     "part": {
-        "title": "Departure notice",
-        "body": "##USER## has left the channel " + channel
+        "title": "IRC Notification",
+        "body": "##USER## has left the channel ##CHANNEL##"
     }
 }
 
 
 def init():
+    with open(config_location) as config_file:
+        config = json.load(config_file)
+
+    global server, port, botName, admin, exitCode, timeout, channel
+    server = config['server']
+    port = config['port']
+    channel = config['channel']
+    botName = config['botName']
+    admin = config['admin']
+    exitCode = config['exitCode']
+    timeout = config['receiveTimeout']
+
     print("[*] Connecting to {}...".format(server))
+
     # Connecting to the server
-    ircsock.connect((server, 6667))
+    ircsock.connect((server, port))
     ircsock.setblocking(0)
 
-    print("[*] Authenticating as {}...".format(botnick))
+    print("[*] Authenticating as {}...".format(botName))
     # Authenticating
-    ircsock.send(bytes("USER "+ botnick +" "+ botnick +" "+ botnick + " " + botnick + "\n", "UTF-8")) #We are basically filling out a form with this line and saying to set all the fields to the bot nickname.
-    ircsock.send(bytes("NICK " + botnick + "\n", "UTF-8")) # Assign the nickname to the bot
+    ircsock.send(bytes("USER "+ botName +" "+ botName +" "+ botName + " " + botName + "\n", "UTF-8")) #We are basically filling out a form with this line and saying to set all the fields to the bot nickname.
+    ircsock.send(bytes("NICK " + botName + "\n", "UTF-8")) # Assign the nickname to the bot
 
 
 # Join the channel
 def join_chan(chan):
-    print("[*] Joinning channel {}...".format(channel))
+    print("[*] Joinning channel {}...".format(chan))
 
     ircsock.send(bytes("JOIN " + chan + "\n", "UTF-8"))
     ircmsg = ""
@@ -103,17 +115,11 @@ def recv():
             user_left(ircmsg.split('!')[0][1:])
 
 
-# Notify when a user goes away (afk)
-def went_away(user):
-    # Send desktop notification
-    os.system("notify-send '{}' '{}' --icon=dialog-information".format(notifs['away']['title'], notifs['away']['body'].replace("##USER##", user)))
-
-
 def user_left(user):
     if currentUsers.count(user) != 0:
         currentUsers.remove(user)
          # Send desktop notification
-        os.system("notify-send '{}' '{}' --icon=dialog-information".format(notifs['part']['title'], notifs['part']['body'].replace("##USER##", user)))
+        os.system("notify-send '{}' '{}' --icon=dialog-information".format(notifs['part']['title'], notifs['part']['body'].replace("##USER##", user).replace("##CHANNEL", channel)))
 
 
 
@@ -121,7 +127,7 @@ def user_joinned(user):
     if currentUsers.count(user) == 0:
         currentUsers.append(user)
          # Send desktop notification
-        os.system("notify-send '{}' '{}' --icon=dialog-information".format(notifs['join']['title'], notifs['join']['body'].replace("##USER##", user)))
+        os.system("notify-send '{}' '{}' --icon=dialog-information".format(notifs['join']['title'], notifs['join']['body'].replace("##USER##", user).replace("##CHANNEL", channel)))
 
 
 # Handle the incoming message depending on its content
