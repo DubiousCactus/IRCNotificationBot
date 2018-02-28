@@ -13,11 +13,13 @@ Small bot that sends desktop notifications when users log in/out
 import socket
 import os
 import signal
+import select
 
 running = True
 currentUsers = []
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+timeout = 3
 server = "chat.freenode.net"
 channel = "#subseven"
 botnick = "Cyber-Theo-9000"
@@ -44,7 +46,7 @@ def init():
     print("[*] Connecting to {}...".format(server))
     # Connecting to the server
     ircsock.connect((server, 6667))
-
+    ircsock.setblocking(0)
 
     print("[*] Authenticating as {}...".format(botnick))
     # Authenticating
@@ -60,7 +62,8 @@ def join_chan(chan):
     ircmsg = ""
 
     while ircmsg.find("End of /NAMES list.") == -1:
-        ircmsg = ircsock.recv(2048).decode("UTF-8").strip('\n\r')
+        if select.select([ircsock], [], [], timeout)[0]:
+            ircmsg = ircsock.recv(2048).decode("UTF-8").strip('\n\r')
 
     print("[*] Channel successfuly joint !")
 
@@ -80,25 +83,28 @@ def kill_bot():
 
 # Receive a command / message
 def recv():
-    ircmsg = ircsock.recv(1024).decode("UTF-8").strip('\n\r')
+    ready = select.select([ircsock], [], [], timeout)
+
+    if ready[0]:
+        ircmsg = ircsock.recv(1024).decode("UTF-8").strip('\n\r')
     
-    print("[DEBUG] Received: {}".format(ircmsg))
+        print("[DEBUG] Received: {}".format(ircmsg))
 
 
-    '''
-    Format of a private message from IRC:
-        [Nick]!~[hostname]@[IP Address] PRIVMSG [channel] :[message]
-    '''
-    if ircmsg.find("PRIVMSG") != -1:
-        sender = ircmsg.split('!', 1)[0][1:]
-        message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
-        handle_msg(message, sender)
-    elif ircmsg.find("PING") != -1:
-        pong()
-    elif ircmsg.find("JOIN") != -1:
-        user_joinned(ircmsg.split('!')[0][1:])
-    elif ircmsg.find("PART") != -1:
-        user_left(ircmsg.split('!')[0][1:])
+        '''
+        Format of a private message from IRC:
+            [Nick]!~[hostname]@[IP Address] PRIVMSG [channel] :[message]
+        '''
+        if ircmsg.find("PRIVMSG") != -1:
+            sender = ircmsg.split('!', 1)[0][1:]
+            message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
+            handle_msg(message, sender)
+        elif ircmsg.find("PING") != -1:
+            pong()
+        elif ircmsg.find("JOIN") != -1:
+            user_joinned(ircmsg.split('!')[0][1:])
+        elif ircmsg.find("PART") != -1:
+            user_left(ircmsg.split('!')[0][1:])
 
 
 # Notify when a user goes away (afk)
