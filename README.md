@@ -3,23 +3,23 @@ IRCNotificationBot is a very simple bot which purpose is to send desktop notific
 
 # Configuration
 The configuration file is available at `~/.config/IRCNotificationBot/config`. Here is an example:
-``
-[
-	"server": "chat.freenode.net",
-	"port": 6667,
-	"channel": "#github",
-	"receiveTimeout": 2,
-	"botName": "Cyber-Bot-9000",
-	"admin": "johncena",
-	"exiteCode" : "die bitch!",
-	"usesWhitelist": false,
-	"whitelist": {
-		"user1",
-		"user2",
-		"user3"
-	}
-]
-``
+
+	[
+		"server": "chat.freenode.net",
+		"port": 6667,
+		"channel": "#github",
+		"receiveTimeout": 2,
+		"botName": "Cyber-Bot-9000",
+		"admin": "johncena",
+		"exiteCode" : "die bitch!",
+		"usesWhitelist": false,
+		"whitelist": {
+			"user1",
+			"user2",
+			"user3"
+		}
+	]
+
 
 # Dependencies
 This service does not require any modules other than the Python3 standard modules.
