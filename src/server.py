@@ -18,14 +18,17 @@ from pathlib import Path
 from utils import Util
 
 class IRCServer:
-    
+ 
+    debug = False
     config_locations = [
-        "./debug.config.js", # Debug config
+        str(Path.cwd()) + "/debug.config.json", # Debug config
         str(Path.home()) + "/.config/IRCNotificationBot/config.json" # Prod config
     ]
 
     def __init__(self, callback, debug):
-        if debug:
+        self.debug = debug
+
+        if self.debug:
             config_location = self.config_locations[0]
         else:
             config_location = self.config_locations[1]
@@ -49,10 +52,12 @@ class IRCServer:
 
 
     def join_channel(self):
+        if self.debug: print("[DEBUG] Authenticating...")
         # Authenticating
         self._sock.send(bytes("USER "+ self._botName +" "+ self._botName +" "+ self._botName + " " + self._botName + "\n", "UTF-8")) #We are basically filling out a form with this line and saying to set all the fields to the bot nickname.
         self._sock.send(bytes("NICK " + self._botName + "\n", "UTF-8")) # Assign the nickname to the bot
 
+        if self.debug: print("[DEBUG] Joinning channel {}...".format(self._channel))
         self._sock.send(bytes("JOIN " + self._channel + "\n", "UTF-8"))
         ircmsg = ""
 
@@ -60,20 +65,24 @@ class IRCServer:
             if select.select([self._sock], [], [], self._timeout)[0]:
                 ircmsg = self._sock.recv(2048).decode("UTF-8").strip('\n\r')
 
+        if self.debug: print("[DEBUG] Channel joinned.")
         Util.notify('IRC Notifier', 'Successfuly joinned {}'.format(self._channel))
 
 
     # Respond to pings
     def pong(self):
+        if self.debug: print("[DEBUG] Pong")
         self._sock.send(bytes("PONG :pingis\n", "UTF-8"))
 
 
     # Receive a command / message
     def recv(self):
         while self._running:
+            if self.debug: print("[DEBUG] Getting ready to receive...")
             ready = select.select([self._sock], [], [], self._timeout)
 
             if ready[0]:
+                if self.debug: print("[DEBUG] Receiving 1024 bytes...")
                 ircmsg = self._sock.recv(1024).decode("UTF-8").strip('\n\r')
             
                 '''
@@ -85,6 +94,7 @@ class IRCServer:
                     message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
                     self._callback.process_message(message, sender)
                 elif ircmsg.find("PING") != -1:
+                    if self.debug: print("[DEBUG] Ping")
                     self.pong()
                 elif ircmsg.find("JOIN") != -1:
                     self._callback.user_joinned(ircmsg.split('!')[0][1:])
@@ -93,12 +103,15 @@ class IRCServer:
 
     
     def watch(self):
+        if self.debug: print("[DEBUG] Starting the watch...")
         self._running = True
         self.recv()
 
 
     def stop(self):
+        if self.debug: print("[DEBUG] Stopping the watch...")
         self._running = False
         self._sock.send(bytes("QUIT \n", "UTF-8"))
         self._sock.close()
+        if self.debug: print("[DEBUG] Socket closed.")
 

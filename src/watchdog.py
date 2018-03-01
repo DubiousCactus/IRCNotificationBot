@@ -21,11 +21,13 @@ from sys import argv
 class Watchdog:
 
     config_location = str(Path.home()) + "/.config/IRCNotificationBot/config.json"
+    debug = False
 
     def __init__(self, debug = False):
         with open(self.config_location) as config_file:
             config = json.load(config_file)
 
+        self.debug = debug
         self._currentUsers = []
         self._admin = config['admin']
         self._exitCode = config['exitCode']
@@ -64,14 +66,19 @@ class Watchdog:
 
     
     def run(self):
+        if self.debug: print("[DEBUG] Starting server...")
         self._server.watch()
 
 
-if __name__ == '__main__':
-    if len(argv) > 0 and argv[0].lower() == "debug":
+if __name__ == "__main__":
+    if len(argv) > 0 and argv[1].lower() == "debug":
+        print("[INFO] Running in debug mode")
         watchdog = Watchdog(True)
     else:
+        print("[INFO] Running in production mode")
         watchdog = Watchdog()
 
     signal.signal(signal.SIGINT, watchdog.signal_handler)
+    signal.signal(signal.SIGTERM, watchdog.signal_handler)
+    signal.pause()
     watchdog.run()
