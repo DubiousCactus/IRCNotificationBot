@@ -23,17 +23,16 @@ cd ~/.config/systemd/user/
 wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/IRCNotificationBot.service
 
 echo "[*] Creating /opt/IRCNotificationBot"
-sudo mkdir -p /opt/IRCNotificationBot/bin
+sudo mkdir -p /opt/IRCNotificationBot/bin/img
 cd /opt/IRCNotificationBot/bin
 
 echo "[*] Downloading the service script from GitHub"
-sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/src/__init__.py
-sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/src/server.py
-sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/src/utils.py
-sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/src/watchdog.py
-sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/src/img/irc_logo.png
+sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/bin/__init__.py
+sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/bin/server.py
+sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/bin/utils.py
+sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/bin/watchdog.py
+sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/bin/img/irc_logo.png
 
-sudo mkdir img
 sudo mv irc_logo.png img/
 
 echo "[*] Giving execution rights to the script"

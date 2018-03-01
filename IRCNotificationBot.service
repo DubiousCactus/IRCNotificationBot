@@ -5,8 +5,8 @@ After=syslog.target
 [Service]
 Type=simple
 Restart=always
-WorkingDirectory=/opt/IRCNotificationBot/src
-ExecStart=/opt/IRCNotificationBot/src/watchdog.py
+WorkingDirectory=/opt/IRCNotificationBot/bin
+ExecStart=/opt/IRCNotificationBot/bin/watchdog.py
 StandardOutput=syslog
 StandardError=syslog
 
