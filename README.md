@@ -3,7 +3,10 @@
 
 # Usage
 Simply start the service via systemd if it is not running already, and you should get a first notification indicating that the bot successfuly joinned your channel.
-To shut down the bot, send it your exit code (from the configuration file) via private message.
+To shut down the bot, send it your exit code (from the configuration file) via private message, as follow:
+
+	/msg BotInChannel <exitCode>
+
 To send an **important** message to the owner of the bot currently in your #channel, write it a private message using the `importantCode` as such:
 
 	/msg BotInChannel <importantCode> <ownerOfTheBot>: <your message>
