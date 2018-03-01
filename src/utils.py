@@ -16,6 +16,6 @@ class Util:
     
     @staticmethod
     def notify(title, body):
-        os.system("/usr/bin/notify-send '" + title + "' '" + body + "' -t 5000 --icon=dialog-information")
+        os.system("/usr/bin/notify-send '" + title + "' '" + body + "' -t 5000 --icon=img/irc_logo.png")
 
 

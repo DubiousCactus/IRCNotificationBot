@@ -1,0 +1,25 @@
+{
+	"server": "chat.freenode.net",
+	"port": 6667,
+	"channel": "#bottesting",
+	"receiveTimeout": 2,
+	"botName": "Cyber-Theo-9000",
+	"admin": "transpalette",
+	"exitCode" : "die bitch!",
+	"usesWhitelist": false,
+	"whitelist": [
+		"user1",
+		"user2",
+		"user3"
+	],
+	"notifications": {
+		"join": {
+			"title": "IRC Notification",
+			"body": "##USER## joinned the channel ##CHANNEL##"
+		},
+		"part": {
+			"title": "IRC Notification",
+			"body": "##USER## has left the channel ##CHANNEL##"
+		}		
+	}
+}

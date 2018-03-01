@@ -16,12 +16,13 @@ import json
 from pathlib import Path
 from server import IRCServer
 from utils import Util
+from sys import argv
 
 class Watchdog:
 
     config_location = str(Path.home()) + "/.config/IRCNotificationBot/config.json"
 
-    def __init__(self):
+    def __init__(self, debug = False):
         with open(self.config_location) as config_file:
             config = json.load(config_file)
 
@@ -31,7 +32,7 @@ class Watchdog:
         self._notifs = config['notifications']
         self._notifs['part']['body'] = self._notifs['part']['body'].replace('##CHANNEL##', config['channel'])
         self._notifs['join']['body'] = self._notifs['join']['body'].replace('##CHANNEL##', config['channel'])
-        self._server = IRCServer(self)
+        self._server = IRCServer(self, debug)
 
 
     def user_left(self, user):
@@ -67,6 +68,10 @@ class Watchdog:
 
 
 if __name__ == '__main__':
-    watchdog = Watchdog()
+    if len(argv) > 0 and argv[0].lower() == "debug":
+        watchdog = Watchdog(True)
+    else:
+        watchdog = Watchdog()
+
     signal.signal(signal.SIGINT, watchdog.signal_handler)
     watchdog.run()

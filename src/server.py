@@ -19,10 +19,18 @@ from utils import Util
 
 class IRCServer:
     
-    config_location = str(Path.home()) + "/.config/IRCNotificationBot/config.json"
+    config_locations = [
+        "./debug.config.js", # Debug config
+        str(Path.home()) + "/.config/IRCNotificationBot/config.json" # Prod config
+    ]
 
-    def __init__(self, callback):
-        with open(self.config_location) as config_file:
+    def __init__(self, callback, debug):
+        if debug:
+            config_location = self.config_locations[0]
+        else:
+            config_location = self.config_locations[1]
+
+        with open(config_location) as config_file:
             config = json.load(config_file)
 
         self._channel = config['channel']
