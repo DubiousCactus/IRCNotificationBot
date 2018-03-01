@@ -3,7 +3,7 @@
 	"port": 6667,
 	"channel": "#bottesting",
 	"receiveTimeout": 2,
-	"botName": "Cyber-Theo-9000",
+	"botName": "Cyber-Debugger-9000",
 	"admin": "transpalette",
 	"exitCode" : "die bitch!",
 	"usesWhitelist": false,

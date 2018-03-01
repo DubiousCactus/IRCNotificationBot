@@ -49,11 +49,13 @@ class Util(metaclass = Singleton):
 
         for key in config_entries:
             value = config_entries[key]
-            if key == 'part' or key == 'join':
+            if key == 'notifications':
                 if debug:
-                    value['body'] = value['body'].replace('##CHANNEL##', debug_conf['channel'])
+                    value['join']['body'] = value['join']['body'].replace('##CHANNEL##', self.debug_conf['channel'])
+                    value['part']['body'] = value['part']['body'].replace('##CHANNEL##', self.debug_conf['channel'])
                 else:
-                    value['body'] = value['body'].replace('##CHANNEL##', conf['channel'])
+                    value['join']['body'] = value['join']['body'].replace('##CHANNEL##', self.conf['channel'])
+                    value['part']['body'] = value['part']['body'].replace('##CHANNEL##', self.conf['channel'])
             
             if debug:
                 self.debug_conf[key] = value
