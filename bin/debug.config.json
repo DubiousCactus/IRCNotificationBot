@@ -3,14 +3,20 @@
 	"port": 6667,
 	"channel": "#bottesting",
 	"receiveTimeout": 2,
-	"botName": "Cyber-Debugger-9000",
+	"botName": "Cyber-Debugger",
 	"admin": "transpalette",
 	"exitCode" : "die bitch!",
+	"importantCode": "tell",
 	"usesWhitelist": false,
 	"whitelist": [
 		"user1",
 		"user2",
 		"user3"
+	],
+	"viplist": [
+		"theo",
+		"hannes",
+		"zigounette"
 	],
 	"notifications": {
 		"join": {
@@ -20,6 +26,10 @@
 		"part": {
 			"title": "IRC Notification",
 			"body": "##USER## has left the channel ##CHANNEL##"
-		}		
+		},
+		"important": {
+			"title": "IRC Notification",
+			"body": "##USER## says: \"##MSG##\""
+		}	
 	}
 }
