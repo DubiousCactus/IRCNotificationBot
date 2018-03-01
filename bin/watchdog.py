@@ -27,6 +27,7 @@ class Watchdog:
         self._admin = Util.config('admin', debug)
         self._exitCode = Util.config('exitCode', debug)
         self._notifs = Util.config('notifications', debug)
+        self._whitelist = Util.config('whitelist', debug)
 
         self._server.join_channel()
 
@@ -39,7 +40,7 @@ class Watchdog:
 
 
     def user_joinned(self, user):
-        if self._currentUsers.count(user) == 0 and user != self._admin:
+        if self._currentUsers.count(user) == 0 and user != self._admin and self._whitelist.count(user):
             self._currentUsers.append(user)
             # Send desktop notification
             Util.notify(self._notifs['join']['title'], self._notifs['join']['body'].replace("##USER##", user))
