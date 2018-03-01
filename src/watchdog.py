@@ -65,7 +65,7 @@ class Watchdog:
 
 
 if __name__ == "__main__":
-    if len(argv) > 0 and argv[1].lower() == "debug":
+    if len(argv) > 1 and argv[1].lower() == "debug":
         print("[INFO] Running in debug mode")
         watchdog = Watchdog(True)
     else:
