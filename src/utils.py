@@ -50,7 +50,10 @@ class Util(metaclass = Singleton):
         for key in config_entries:
             value = config_entries[key]
             if key == 'part' or key == 'join':
-                value['body'] = value['body'].replace('##CHANNEL##', config['channel'])
+                if debug:
+                    value['body'] = value['body'].replace('##CHANNEL##', debug_conf['channel'])
+                else:
+                    value['body'] = value['body'].replace('##CHANNEL##', conf['channel'])
             
             if debug:
                 self.debug_conf[key] = value
