@@ -78,7 +78,7 @@ if __name__ == "__main__":
         print("[INFO] Running in production mode")
         watchdog = Watchdog()
 
+    watchdog.run()
     signal.signal(signal.SIGINT, watchdog.signal_handler)
     signal.signal(signal.SIGTERM, watchdog.signal_handler)
     signal.pause()
-    watchdog.run()
