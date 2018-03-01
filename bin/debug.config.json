@@ -3,9 +3,10 @@
 	"port": 6667,
 	"channel": "#bottesting",
 	"receiveTimeout": 2,
-	"botName": "Cyber-Debugger-9000",
+	"botName": "Cyber-Debugger",
 	"admin": "transpalette",
 	"exitCode" : "die bitch!",
+	"importantCode": "tell",
 	"usesWhitelist": false,
 	"whitelist": [
 		"user1",
@@ -15,7 +16,7 @@
 	"viplist": [
 		"theo",
 		"hannes",
-		"sigounette"
+		"zigounette"
 	],
 	"notifications": {
 		"join": {

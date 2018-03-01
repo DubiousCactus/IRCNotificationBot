@@ -11,6 +11,7 @@ Small bot that sends desktop notifications when users log in/out
 """
 
 import signal
+import re
 
 from server import IRCServer
 from utils import Util
@@ -26,6 +27,7 @@ class Watchdog:
         self._server = IRCServer(self, debug)
         self._admin = Util.config('admin', debug)
         self._exitCode = Util.config('exitCode', debug)
+        self._importantCode = Util.config('importantCode', debug)
         self._notifs = Util.config('notifications', debug)
         self._whitelist = Util.config('whitelist', debug)
         self._usesWhitelist = Util.config('usesWhitelist', debug)
@@ -61,9 +63,9 @@ class Watchdog:
 
         if msg.rstrip() == self._exitCode and sender.lower() == self._admin.lower():
             self._server.stop()
-        elif re.match('^{} {}: .+', msg):
+        elif re.match('^{} {}: .+'.format(self._importantCode, self._admin), msg):
             # Important message: <importantCode> <this_admin>: <message>
-            important(msg.split(':')[0][1:], sender)
+            self.important(msg.split(':')[1][1:], sender)
 
 
     def signal_handler(self, signal, frame):
