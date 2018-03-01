@@ -2,7 +2,9 @@
 **IRCNotificationBot** is a very simple bot which purpose is to send desktop notifications when a user `JOIN` or `PART` a predefined channel. It runs as a Systemd service, it is extremely easy to install *and* uninstall, and offers some configuration parameters through a local config file. A whitelist can be used to limit which users will trigger notifications, and the notification messages can be entirely customized :) 
 
 # Usage
-Simply start the service via systemd if it is not running already, and you should get a first notification indicating that the bot successfuly joinned your channel. You can configure the bot however you want, as shown in the section below. If you modify the configuration, simply restart the service :)
+Simply start the service via systemd if it is not running already, and you should get a first notification indicating that the bot successfuly joinned your channel.
+To shut down the bot, send it your exit code (from the configuration file) via private message.
+You can configure the bot however you want, as shown in the section below. If you modify the configuration, simply restart the service :)
 
 # Configuration
 The configuration file is available at `~/.config/IRCNotificationBot/config.json`. Here is an example:
@@ -73,7 +75,7 @@ Simply run the following command (if you don't trust me, and you shouldn't, just
 ## To Do
 The following features are not implemented yet:
 
-- [ ] Code refactoring
+- [x] Code refactoring
 - [ ] White list
 - [ ] Important messages notifications
 - [ ] Toggle new messages notifications on shortcut
