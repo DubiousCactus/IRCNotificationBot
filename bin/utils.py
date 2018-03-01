@@ -66,7 +66,7 @@ class Util(metaclass = Singleton):
 
     @staticmethod
     def notify(title, body):
-        os.system("/usr/bin/notify-send '" + title + "' '" + body + "' -t 5000 --icon=img/irc_logo.png")
+        os.system("/usr/bin/notify-send '" + title + "' '" + body + "' -t 10000 -i " + str(Path.cwd()) + "/img/irc_logo.png")
 
 
     @staticmethod
