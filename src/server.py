@@ -14,6 +14,7 @@ import socket
 import select
 import json
 import re
+import sys
 
 from pathlib import Path
 from utils import Util
@@ -116,4 +117,5 @@ class IRCServer:
         self._sock.send(bytes("QUIT \n", "UTF-8"))
         self._sock.close()
         if self.debug: print("[DEBUG] Socket closed.")
+        sys.exit(0)
 

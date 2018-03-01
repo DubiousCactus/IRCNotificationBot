@@ -53,6 +53,7 @@ class Watchdog:
 
     # Handle the incoming message depending on its content
     def process_message(self, msg, sender):
+        if self.debug: print("[DEBUG] Processing message \"{}\" from [{}]".format(msg, sender))
         if len(msg) < 1:
             raise Error("/!\ Invalid message !")
 
