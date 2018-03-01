@@ -75,5 +75,5 @@ The following features are not implemented yet:
 
 - [ ] Code refactoring
 - [ ] White list
-- [ ] New messages notifications
+- [ ] Important messages notifications
 - [ ] Toggle new messages notifications on shortcut
