@@ -13,6 +13,7 @@ IRC Server class: handles the connection, the configuration...
 import socket
 import select
 import json
+import re
 
 from pathlib import Path
 from utils import Util
@@ -78,27 +79,28 @@ class IRCServer:
     # Receive a command / message
     def recv(self):
         while self._running:
-            if self.debug: print("[DEBUG] Getting ready to receive...")
             ready = select.select([self._sock], [], [], self._timeout)
 
             if ready[0]:
                 if self.debug: print("[DEBUG] Receiving 1024 bytes...")
                 ircmsg = self._sock.recv(1024).decode("UTF-8").strip('\n\r')
+                if self.debug: print("[DEBUG] {}".format(ircmsg))
             
                 '''
                 Format of a private message from IRC:
                     [Nick]!~[hostname]@[IP Address] PRIVMSG [channel] :[message]
                 '''
-                if ircmsg.find("PRIVMSG") != -1:
+                if re.match("^:.+!.+@.+ PRIVMSG {} :".format(self._botName), ircmsg):
+                    if self.debug: print("[DEBUG] Received private message")
                     sender = ircmsg.split('!', 1)[0][1:]
                     message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
                     self._callback.process_message(message, sender)
-                elif ircmsg.find("PING") != -1:
+                elif re.match("^PING :.+", ircmsg):
                     if self.debug: print("[DEBUG] Ping")
                     self.pong()
-                elif ircmsg.find("JOIN") != -1:
+                elif re.match("^:.+!.+@.+ JOIN #.+", ircmsg):
                     self._callback.user_joinned(ircmsg.split('!')[0][1:])
-                elif ircmsg.find("PART") != -1:
+                elif re.match("^:.+!.+@.+ PART #.+", ircmsg):
                     self._callback.user_left(ircmsg.split('!')[0][1:])
 
     
