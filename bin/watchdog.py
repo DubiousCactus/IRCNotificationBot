@@ -28,6 +28,8 @@ class Watchdog:
         self._exitCode = Util.config('exitCode', debug)
         self._notifs = Util.config('notifications', debug)
         self._whitelist = Util.config('whitelist', debug)
+        self._usesWhitelist = Util.config('usesWhitelist', debug)
+        self._viplist = Util.config('viplist', debug)
 
         self._server.join_channel()
 
@@ -40,10 +42,15 @@ class Watchdog:
 
 
     def user_joinned(self, user):
-        if self._currentUsers.count(user) == 0 and user != self._admin and self._whitelist.count(user):
+        if self._currentUsers.count(user) == 0 and user != self._admin and ((self._usesWhitelist and self._whitelist.count(user)) or not self._usesWhitelist):
             self._currentUsers.append(user)
             # Send desktop notification
             Util.notify(self._notifs['join']['title'], self._notifs['join']['body'].replace("##USER##", user))
+
+
+    def important(self, message, sender):
+        if self._viplist.count(sender):
+            Util.notify(self._notifs['important']['title'], self._notifs['important']['body'].replace("##USER##", sender).replace("##MSG##", message))
 
 
     # Handle the incoming message depending on its content
@@ -54,6 +61,9 @@ class Watchdog:
 
         if msg.rstrip() == self._exitCode and sender.lower() == self._admin.lower():
             self._server.stop()
+        elif re.match('^{} {}: .+', msg):
+            # Important message: <importantCode> <this_admin>: <message>
+            important(msg.split(':')[0][1:], sender)
 
 
     def signal_handler(self, signal, frame):

@@ -12,6 +12,11 @@
 		"user2",
 		"user3"
 	],
+	"viplist": [
+		"theo",
+		"hannes",
+		"sigounette"
+	],
 	"notifications": {
 		"join": {
 			"title": "IRC Notification",
@@ -20,6 +25,10 @@
 		"part": {
 			"title": "IRC Notification",
 			"body": "##USER## has left the channel ##CHANNEL##"
-		}		
+		},
+		"important": {
+			"title": "IRC Notification",
+			"body": "##USER## says: \"##MSG##\""
+		}	
 	}
 }
