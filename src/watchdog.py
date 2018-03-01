@@ -11,30 +11,24 @@ Small bot that sends desktop notifications when users log in/out
 """
 
 import signal
-import json
 
-from pathlib import Path
 from server import IRCServer
 from utils import Util
 from sys import argv
 
 class Watchdog:
 
-    config_location = str(Path.home()) + "/.config/IRCNotificationBot/config.json"
     debug = False
 
     def __init__(self, debug = False):
-        with open(self.config_location) as config_file:
-            config = json.load(config_file)
-
         self.debug = debug
         self._currentUsers = []
-        self._admin = config['admin']
-        self._exitCode = config['exitCode']
-        self._notifs = config['notifications']
-        self._notifs['part']['body'] = self._notifs['part']['body'].replace('##CHANNEL##', config['channel'])
-        self._notifs['join']['body'] = self._notifs['join']['body'].replace('##CHANNEL##', config['channel'])
         self._server = IRCServer(self, debug)
+        self._admin = Util.config('admin', debug)
+        self._exitCode = Util.config('exitCode', debug)
+        self._notifs = Util.config('notifications', debug)
+
+        self._server.join_channel()
 
 
     def user_left(self, user):
@@ -67,7 +61,6 @@ class Watchdog:
 
     
     def run(self):
-        if self.debug: print("[DEBUG] Starting server...")
         self._server.watch()
 
 
@@ -80,5 +73,4 @@ if __name__ == "__main__":
         watchdog = Watchdog()
 
     signal.signal(signal.SIGINT, watchdog.signal_handler)
-    signal.pause()
     watchdog.run()

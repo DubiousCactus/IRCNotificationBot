@@ -16,41 +16,26 @@ import json
 import re
 import sys
 
-from pathlib import Path
 from utils import Util
 
 class IRCServer:
  
     debug = False
-    config_locations = [
-        str(Path.cwd()) + "/debug.config.json", # Debug config
-        str(Path.home()) + "/.config/IRCNotificationBot/config.json" # Prod config
-    ]
 
     def __init__(self, callback, debug):
         self.debug = debug
 
-        if self.debug:
-            config_location = self.config_locations[0]
-        else:
-            config_location = self.config_locations[1]
-
-        with open(config_location) as config_file:
-            config = json.load(config_file)
-
-        self._channel = config['channel']
-        self._botName = config['botName']
-        self._timeout = config['receiveTimeout']
-        self._notifs = config['notifications']
+        self._channel = Util.config('channel', debug)
+        self._botName = Util.config('botName', debug)
+        self._timeout = Util.config('receiveTimeout', debug)
+        self._notifs = Util.config('notifications', debug)
 
         self._running = False
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self._sock.connect((config['server'], config['port']))
+        self._sock.connect((Util.config('server', debug), Util.config('port', debug)))
         self._sock.setblocking(0)
 
         self._callback = callback
-
-        self.join_channel()
 
 
     def join_channel(self):
