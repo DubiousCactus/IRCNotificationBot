@@ -4,6 +4,12 @@
 # Usage
 Simply start the service via systemd if it is not running already, and you should get a first notification indicating that the bot successfuly joinned your channel.
 To shut down the bot, send it your exit code (from the configuration file) via private message.
+To send an **important** message to the owner of the bot currently in your #channel, write it a private message using the `importantCode` as such:
+
+	/msg BotInChannel <importantCode> <ownerOfTheBot>: <your message>
+
+However, remember that you have to be in the `viplist` of the owner of the bot you are writing to (but not in the whitelist, which only concerns `JOIN` and `PART` notifications).
+
 You can configure the bot however you want, as shown in the section below. If you modify the configuration, simply restart the service :)
 
 # Configuration
@@ -17,11 +23,15 @@ The configuration file is available at `~/.config/IRCNotificationBot/config.json
 		"botName": "Cyber-Bot-9000",
 		"admin": "johncena",
 		"exitCode" : "die bitch!",
+		"importantCode" : "tell",
 		"usesWhitelist": false,
 		"whitelist": [
 			"user1",
 			"user2",
 			"user3"
+		],
+		"viplist": [
+			"user1"
 		],
 		"notifications": {
 			"join": {
@@ -31,12 +41,16 @@ The configuration file is available at `~/.config/IRCNotificationBot/config.json
 			"part": {
 				"title": "IRC Notification",
 				"body": "##USER## has left the channel ##CHANNEL##"
-			}	
+			},
+			"important": {
+				"title": "IRC Notification",
+				"body": "##USER## says: ##MSG##"
+			}
 		}
 	}
 
 If you set `usesWhitelist` to true, then the notifications will only be fired for the users specified in the `whitelist` array. This can be useful if you only want to know when your friends join the channel for example.!
-You can modify the `notifications` section to change the text of the notifications. However, **do not** modify or remove `##USER##` and `##CHANNEL##` as those are place holders for the actual values.
+You can modify the `notifications` section to change the text of the notifications. However, **do not** modify or remove `##USER##`, `##CHANNEL##` and `##MSG##` as those are place holders for the actual values.
 
 
 # Dependencies
