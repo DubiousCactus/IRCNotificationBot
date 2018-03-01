@@ -27,7 +27,14 @@ sudo mkdir /opt/IRCNotificationBot
 cd /opt/IRCNotificationBot
 
 echo "[*] Downloading the service script from GitHub"
-sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/watchdog.py
+sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/src/__init__.py
+sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/src/server.py
+sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/src/utils.py
+sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/src/watchdog.py
+sudo wget --quiet https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/src/img/irc_logo.png
+
+sudo mkdir img
+sudo mv irc_logo.png img/
 
 echo "[*] Giving execution rights to the script"
 sudo chmod 775 watchdog.py
