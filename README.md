@@ -93,6 +93,6 @@ Simply run the following command (if you don't trust me, and you shouldn't, just
 The following features are not implemented yet:
 
 - [x] Code refactoring
-- [ ] White list
-- [ ] Important messages notifications
+- [x] White list
+- [x] Important messages notifications
 - [ ] Toggle new messages notifications on shortcut
