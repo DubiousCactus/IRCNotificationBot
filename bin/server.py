@@ -48,9 +48,14 @@ class IRCServer:
         self._sock.send(bytes("JOIN " + self._channel + "\n", "UTF-8"))
         ircmsg = ""
 
-        while ircmsg.find("End of /NAMES list.") == -1:
+        while ircmsg.find("End of /NAMES list.") == -1 and ircmsg.find("Nickname is already in use") == -1:
             if select.select([self._sock], [], [], self._timeout)[0]:
                 ircmsg = self._sock.recv(2048).decode("UTF-8").strip('\n\r')
+
+        if ircmsg.find("Nickname is already in use"):
+            print("[ERROR] Nickname already in use")
+            Util.notify("IRC Notification bot [ERROR]", "The chosen nickname is already in use.")
+            sys.exit(1)
 
         if self.debug: print("[DEBUG] Channel joinned.")
         Util.notify('IRC Notifier', 'Successfuly joinned {}'.format(self._channel))
