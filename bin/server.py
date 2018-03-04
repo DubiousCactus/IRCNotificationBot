@@ -27,6 +27,7 @@ class IRCServer:
 
         self._channel = Util.config('channel', debug)
         self._botName = Util.config('botName', debug)
+        self.check_nickname()
         self._timeout = Util.config('receiveTimeout', debug)
         self._notifs = Util.config('notifications', debug)
 
@@ -36,6 +37,15 @@ class IRCServer:
         self._sock.setblocking(0)
 
         self._callback = callback
+
+
+    def check_nickname(self):
+        chars = set("!@#$%&*()+=';/,.<>\"")
+
+        if any((c in chars) for c in self._botName):
+            print("[ERROR] Unsupported special characters found in botName")
+            Util.notify("IRC Notification bot [ERROR]", "The chosen nickname contains special characters.")
+            sys.exit(1)
 
 
     def join_channel(self):
@@ -52,7 +62,7 @@ class IRCServer:
             if select.select([self._sock], [], [], self._timeout)[0]:
                 ircmsg = self._sock.recv(2048).decode("UTF-8").strip('\n\r')
 
-        if ircmsg.find("Nickname is already in use"):
+        if ircmsg.find("Nickname is already in use") != -1:
             print("[ERROR] Nickname already in use")
             Util.notify("IRC Notification bot [ERROR]", "The chosen nickname is already in use.")
             sys.exit(1)
