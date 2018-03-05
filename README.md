@@ -78,6 +78,13 @@ or
 However, if you want it to run at boot time as a service, you can simply move the `IRCNotificationBot.service` to `~/.config/systemd/user/`, and then run `systemctl --user enable IRCNotification.service` to enable it (it will then start on boot).
 Don't forget to append `--user` to systemctl, because the service runs in user mode ;)
 
+# Updating
+## Automatic update
+	
+Simply run the following command (if you don't trust me, and you shouldn't, just read through the install script, it is commented and pretty straight-forward):
+
+	curl -s https://raw.githubusercontent.com/M4gicT0/IRCNotificationBot/master/install.sh | bash
+
 # Uninstallation
 ## Automatic uninstallation
 Simply run the following command (if you don't trust me, and you shouldn't, just read through the uninstall script, it is commented and pretty straight-forward):
