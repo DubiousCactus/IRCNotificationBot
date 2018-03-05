@@ -12,9 +12,10 @@ IRC Server class: handles the connection, the configuration...
 
 import socket
 import select
+import time
 import json
-import re
 import sys
+import re
 
 from utils import Util
 
@@ -79,6 +80,8 @@ class IRCServer:
 
     # Receive a command / message
     def recv(self):
+        last_ping = time.time()
+        threshold = 5 * 60
         while self._running:
             ready = select.select([self._sock], [], [], self._timeout)
 
@@ -98,11 +101,30 @@ class IRCServer:
                     self._callback.process_message(message, sender)
                 elif re.match("^PING :.+", ircmsg):
                     if self.debug: print("[DEBUG] Ping")
+                    last_ping = time.time()
                     self.pong()
                 elif re.match("^:.+!.+@.+ JOIN #.+", ircmsg):
                     self._callback.user_joinned(ircmsg.split('!')[0][1:])
                 elif re.match("^:.+!.+@.+ PART #.+", ircmsg):
                     self._callback.user_left(ircmsg.split('!')[0][1:])
+            else:
+                if self.debug: print("[DEBUG] Not ready to receive")
+                if (time.time() - last_ping) > threshold and not self.is_connected():
+                    self.reconnect()
+                    break
+
+
+    def is_connected(self):
+        self._sock.send(bytes("/names\n", "UTF-8"))
+        data = self._sock.recv(4096)
+ 
+        return (len(data) == 0)
+
+    def reconnect(self):
+        self._running = False
+        if self.debug: print("[DEBUG] Reconnecting...")
+        self.join_channel()
+        self.watch()
 
     
     def watch(self):
