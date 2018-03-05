@@ -12,10 +12,13 @@ IRC Server class: handles the connection, the configuration...
 
 import socket
 import select
+import time
 import json
-import re
 import sys
+import re
 
+from urllib.error import URLError
+from urllib.request import urlopen
 from utils import Util
 
 class IRCServer:
@@ -79,6 +82,8 @@ class IRCServer:
 
     # Receive a command / message
     def recv(self):
+        last_ping = time.time()
+        threshold = 256 # 256 seconds on Freenode
         while self._running:
             ready = select.select([self._sock], [], [], self._timeout)
 
@@ -98,13 +103,49 @@ class IRCServer:
                     self._callback.process_message(message, sender)
                 elif re.match("^PING :.+", ircmsg):
                     if self.debug: print("[DEBUG] Ping")
+                    last_ping = time.time()
                     self.pong()
                 elif re.match("^:.+!.+@.+ JOIN #.+", ircmsg):
                     self._callback.user_joinned(ircmsg.split('!')[0][1:])
                 elif re.match("^:.+!.+@.+ PART #.+", ircmsg):
                     self._callback.user_left(ircmsg.split('!')[0][1:])
+            else:
+                if self.debug: print("[DEBUG] Not ready to receive")
+                if (time.time() - last_ping) > threshold:
+                    # Don't get stuck in this conditional loop:
+                    last_ping = time.time()
+                    if not self.is_connected():
+                        self.reconnect()
+                        break
 
-    
+
+    def is_connected(self):
+        self._sock.send(bytes("NAMES\n", "UTF-8"))
+        ready = select.select([self._sock], [], [], self._timeout)
+        
+        return ready[0]
+
+    def reconnect(self):
+        if self.debug: print("[DEBUG] Reconnecting...")
+        self._sock.close()
+
+        while not self.internet_on(): time.sleep(1) #Wait for Internet conenction to re-establish (if WiFi..)
+
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._sock.connect((Util.config('server', self.debug), Util.config('port', self.debug)))
+        self._sock.setblocking(0)
+        self.join_channel()
+        self.watch()
+
+
+    def internet_on(self):
+        try:
+            urlopen('http://216.58.192.142', timeout=1) # Google's IP
+            return True
+        except URLError as err:
+            return False
+ 
+
     def watch(self):
         if self.debug: print("[DEBUG] Starting the watch...")
         self._running = True
