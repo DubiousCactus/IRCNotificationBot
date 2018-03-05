@@ -111,13 +111,16 @@ class IRCServer:
                     self._callback.user_left(ircmsg.split('!')[0][1:])
             else:
                 if self.debug: print("[DEBUG] Not ready to receive")
-                if (time.time() - last_ping) > threshold and not self.is_connected():
-                    self.reconnect()
-                    break
+                if (time.time() - last_ping) > threshold:
+                    # Don't get stuck in this conditional loop:
+                    last_ping = time.time()
+                    if not self.is_connected():
+                        self.reconnect()
+                        break
 
 
     def is_connected(self):
-        self._sock.send(bytes("/names\n", "UTF-8"))
+        self._sock.send(bytes("NAMES\n", "UTF-8"))
         ready = select.select([self._sock], [], [], self._timeout)
         
         return ready[0]
