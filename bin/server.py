@@ -125,7 +125,9 @@ class IRCServer:
     def reconnect(self):
         if self.debug: print("[DEBUG] Reconnecting...")
         self._sock.close()
-        while not internet_on(): time.sleep(1)
+
+        while not self.internet_on(): time.sleep(1) #Wait for Internet conenction to re-establish (if WiFi..)
+
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._sock.connect((Util.config('server', self.debug), Util.config('port', self.debug)))
         self._sock.setblocking(0)
@@ -133,7 +135,7 @@ class IRCServer:
         self.watch()
 
 
-    def internet_on():
+    def internet_on(self):
         try:
             urlopen('http://216.58.192.142', timeout=1) # Google's IP
             return True
