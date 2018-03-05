@@ -10,7 +10,6 @@
 IRC Server class: handles the connection, the configuration...
 """
 
-import urllib2
 import socket
 import select
 import time
@@ -18,6 +17,8 @@ import json
 import sys
 import re
 
+from urllib.error import URLError
+from urllib.request import urlopen
 from utils import Util
 
 class IRCServer:
@@ -134,9 +135,9 @@ class IRCServer:
 
     def internet_on():
         try:
-            urllib2.urlopen('http://216.58.192.142', timeout=1) # Google's IP
+            urlopen('http://216.58.192.142', timeout=1) # Google's IP
             return True
-        except urllib2.URLError as err:
+        except URLError as err:
             return False
  
 
