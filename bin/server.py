@@ -10,6 +10,7 @@
 IRC Server class: handles the connection, the configuration...
 """
 
+import urllib2
 import socket
 import select
 import time
@@ -81,7 +82,7 @@ class IRCServer:
     # Receive a command / message
     def recv(self):
         last_ping = time.time()
-        threshold = 5 * 60
+        threshold = 256 # 256 seconds on Freenode
         while self._running:
             ready = select.select([self._sock], [], [], self._timeout)
 
@@ -116,17 +117,29 @@ class IRCServer:
 
     def is_connected(self):
         self._sock.send(bytes("/names\n", "UTF-8"))
-        data = self._sock.recv(4096)
- 
-        return (len(data) == 0)
+        ready = select.select([self._sock], [], [], self._timeout)
+        
+        return ready[0]
 
     def reconnect(self):
-        self._running = False
         if self.debug: print("[DEBUG] Reconnecting...")
+        self._sock.close()
+        while not internet_on(): time.sleep(1)
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._sock.connect((Util.config('server', self.debug), Util.config('port', self.debug)))
+        self._sock.setblocking(0)
         self.join_channel()
         self.watch()
 
-    
+
+    def internet_on():
+        try:
+            urllib2.urlopen('http://216.58.192.142', timeout=1) # Google's IP
+            return True
+        except urllib2.URLError as err:
+            return False
+ 
+
     def watch(self):
         if self.debug: print("[DEBUG] Starting the watch...")
         self._running = True
