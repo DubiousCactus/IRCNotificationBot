@@ -34,6 +34,8 @@ class IRCServer:
         self._timeout = Util.config('receiveTimeout', debug)
         self._notifs = Util.config('notifications', debug)
 
+        while not self.internet_on(): time.sleep(1)
+
         self._running = False
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._sock.connect((Util.config('server', debug), Util.config('port', debug)))
