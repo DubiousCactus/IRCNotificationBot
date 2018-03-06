@@ -11,7 +11,7 @@ Utility class
 """
 
 import json
-import os
+import subprocess
 
 from pathlib import Path
 
@@ -66,7 +66,7 @@ class Util(metaclass = Singleton):
 
     @staticmethod
     def notify(title, body):
-        os.system("/usr/bin/notify-send '" + title + "' '" + body + "' -t 10000 -i " + str(Path.cwd()) + "/img/irc_logo.png")
+        subprocess.call(["/usr/bin/notify-send", title, body, "-t", "10000", "--icon=" + str(Path.cwd()) + "/img/irc_logo.png"])
 
 
     @staticmethod
